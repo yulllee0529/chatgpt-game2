@@ -1,22 +1,25 @@
-name: Build Infinite Mine APK
+name: Build Android APK
+
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
     paths:
       - 'app/**'
       - '*.gradle'
       - 'settings.gradle'
       - '.github/workflows/build-apk.yml'
+      - 'index.html'
+
 permissions:
   contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@v4
-      - name: Set up Java
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -26,10 +29,11 @@ jobs:
         with:
           gradle-version: '8.9'
       - name: Build debug APK
-        run: gradle assembleDebug
+        run: gradle --no-daemon assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: infinite-mine-tycoon-debug-apk
+          name: ChatGPT-Game2-Runner-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 14
