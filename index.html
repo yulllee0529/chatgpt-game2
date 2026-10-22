@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Dash Runner</title>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ChatGPT Game 2 - Dash Runner</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#10182c;color:#fff;font-family:system-ui,sans-serif;display:flex;min-height:100dvh;align-items:center;justify-content:center;padding:14px}.wrap{width:min(900px,100%)}header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}h1{font-size:clamp(22px,5vw,34px);margin:0;color:#7ef9ff}button{border:0;border-radius:14px;padding:12px 18px;font-weight:800;font-size:16px;background:#7ef9ff;color:#102039;cursor:pointer}canvas{display:block;width:100%;aspect-ratio:16/9;background:#182748;border:2px solid #30476d;border-radius:16px;touch-action:manipulation}.hint{text-align:center;color:#c3d1e8;font-size:14px;margin:10px 0}.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.pill{background:#202e4b;padding:8px 14px;border-radius:999px}
-</style></head><body><main class="wrap"><header><h1>⚡ DASH RUNNER</h1><div class="pill">최고 점수 <b id="best">0</b></div></header><canvas id="game" width="960" height="540" aria-label="러너 게임"></canvas><p class="hint" id="hint">화면을 터치하거나 스페이스바를 눌러 점프!</p><div class="row"><button id="jump">점프 / 시작</button><button id="restart">다시 시작 ↻</button><div class="pill">점수 <b id="score">0</b></div></div></main>
+</style></head><body><main class="wrap"><header><h1>⚡ CHATGPT GAME 2: RUNNER</h1><div class="pill">최고 점수 <b id="best">0</b></div></header><canvas id="game" width="960" height="540" aria-label="러너 게임"></canvas><p class="hint" id="hint">화면을 터치하거나 스페이스바를 눌러 점프!</p><div class="row"><button id="jump">점프 / 시작</button><button id="restart">다시 시작 ↻</button><div class="pill">점수 <b id="score">0</b></div></div></main>
 <script>
 (()=>{
 const c=document.getElementById('game'),ctx=c.getContext('2d'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'),hint=document.getElementById('hint');
 let best=Number(localStorage.getItem('dashRunnerBest')||0);bestEl.textContent=best;
 let player,obstacles,coins,score,speed,frame,playing,dead,ground;
-function reset(){player={x:150,y:0,w:42,h:54,vy:0,onGround:true};ground=420;player.y=ground-player.h;obstacles=[];coins=[];score=0;speed=6;frame=0;playing=false;dead=false;scoreEl.textContent='0';hint.textContent='화면을 터치하거나 스페이스바를 눌러 점프!';draw()}
+function reset(){player={x:150,y:0,w:42,h:54,vy:0,onGround:true};ground=420;player.y=ground-player.h;obstacles=[];coins=[];score=0;speed=6;frame=0;playing=false;dead=false;scoreEl.textContent='0';hint.textContent='터치 또는 스페이스바로 점프 · 코인을 모아 최고 기록을 세워 봐!';draw()}
 function jump(){if(dead){reset();playing=true;return}if(!playing){playing=true;hint.textContent='장애물을 피해 달려!';}if(player.onGround){player.vy=-16;player.onGround=false}}
 function spawn(){let h=30+Math.random()*35,w=25+Math.random()*25;obstacles.push({x:1000,y:ground-h,w,h});if(Math.random()<.65)coins.push({x:1020,y:ground-100-Math.random()*90,r:10,taken:false})}
 function draw(){ctx.clearRect(0,0,960,540);let g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#182748');g.addColorStop(1,'#263d60');ctx.fillStyle=g;ctx.fillRect(0,0,960,540);
